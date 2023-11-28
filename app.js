@@ -20,11 +20,29 @@ class App extends React.Component{
             
         const newTache = {
             id: Math.floor(Math.random() * 1000),
-            value: this.state.tache
+            value: this.state.tache,
+            isEditing: false
         }
         this.setState(prev => ({ listeTache:[...prev.listeTache, newTache]}))
         this.setState({tache: ''})
     }
+
+    editTache = (TacheId, newValue) => {
+        this.setState(prev => ({
+            listeTache: prev.listeTache.map(tache =>
+                tache.id === TacheId ? { ...tache, value: newValue } : tache
+            )
+        }));
+    }
+    
+    toggleEditing = (TacheId) => {
+        this.setState(prev => ({
+            listeTache: prev.listeTache.map(tache =>
+                tache.id === TacheId ? { ...tache, isEditing: !tache.isEditing } : tache
+            )
+        }));
+    }
+    
 
     deleteTache = (TacheId) => {
         const newListeTache = this.state.listeTache.filter(tache => tache.id !== TacheId)
@@ -35,32 +53,37 @@ class App extends React.Component{
     
         return(
         
-    <div className="mx-auto w-50 py-5">
+    <div className="container mx-auto w-50 py-5">
     <h1 className="mt-4 text-center">Todo list</h1>
     <form onSubmit={this.addTache}>
       <div className="mb-5">
         <label className="form-label">Entrez votre tache</label>
-        <input type="text" className="form-control" value={this.state.tache}  onChange={(e) => {this.setState({tache: e.target.value})}}/>
+        <input type="text" className="form-control" value={this.state.tache} onChange={(e) => {this.setState({tache: e.target.value})}}/>
       </div>
       <button type="submit" className="w-100 btn btn-success">Submit</button>
     </form>
-    <h1 className="mt-4 text-center">LIste Tache</h1>
+    <h1 className="mt-4 text-center">Liste Tache</h1>
     <ul>
         {
             this.state.listeTache.length > 0 &&
+            
             this.state.listeTache.map((tache) => (
                 <div key={tache.id} className='d-flex justify-content-between mt-3'>
-                    <li>
-                        {tache.value}
-                    </li>
-                    <button className="btn-primary" >edit</button>
-                    <button className="btn-danger" onClick={() => this.deleteTache(tache.id)}>delete</button>      
+                    {tache.isEditing ? (
+                        <input type="text" value={tache.value} onChange={(e) => this.editTache(tache.id, e.target.value)} />
+                    ) : (
+                        <li>{tache.value}</li>
+                    )}
+                    <button className="btn-primary" onClick={() => this.toggleEditing(tache.id)}>
+                        {tache.isEditing ? 'Save' : 'Edit'}
+                    </button>
+                    <button className="btn-danger" onClick={() => this.deleteTache(tache.id)}>Delete</button>
                 </div>
             ))
         }      
         {/* <span className='text-danger p-0'>Pas encore de tache</span> */}
     </ul>
-  </div>
+    </div>
         )
     }
 }
