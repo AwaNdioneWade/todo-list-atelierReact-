@@ -12,23 +12,23 @@
 class App extends React.Component{
     constructor(props){
         super(props)
-        this.state = {todo: '', todoList: []}
+        this.state = {tache: '', listeTache: []}
     }
 
-    addTodo = (e) => {
+    addTache = (e) => {
         e.preventDefault()
             
-        const newTodo = {
+        const newTache = {
             id: Math.floor(Math.random() * 1000),
-            value: this.state.todo
+            value: this.state.tache
         }
-        this.setState(prev => ({ todoList:[...prev.todoList, newTodo]}))
-        this.setState({todo: ''})
+        this.setState(prev => ({ listeTache:[...prev.listeTache, newTache]}))
+        this.setState({tache: ''})
     }
 
-    deleteTodo = (todoId) => {
-        const newTodos = this.state.todoList.filter(todo => todo.id !== todoId)
-        this.setState({todoList: newTodos})
+    deleteTache = (TacheId) => {
+        const newListeTache = this.state.listeTache.filter(tache => tache.id !== TacheId)
+        this.setState({listeTache: newListeTache})
       }
 
     render(){
@@ -37,24 +37,24 @@ class App extends React.Component{
         
     <div className="mx-auto w-50 py-5">
     <h1 className="mt-4 text-center">Todo list</h1>
-    <form onSubmit={this.addTodo}>
+    <form onSubmit={this.addTache}>
       <div className="mb-5">
         <label className="form-label">Entrez votre tache</label>
-        <input type="text" className="form-control" value={this.state.todo}  onChange={(e) => {this.setState({todo: e.target.value})}}/>
+        <input type="text" className="form-control" value={this.state.tache}  onChange={(e) => {this.setState({tache: e.target.value})}}/>
       </div>
       <button type="submit" className="w-100 btn btn-success">Submit</button>
     </form>
     <h1 className="mt-4 text-center">LIste Tache</h1>
     <ul>
         {
-            this.state.todoList.length > 0 &&
-            this.state.todoList.map((todo) => (
-                <div key={todo.id} className='d-flex justify-content-between mt-3'>
+            this.state.listeTache.length > 0 &&
+            this.state.listeTache.map((tache) => (
+                <div key={tache.id} className='d-flex justify-content-between mt-3'>
                     <li>
-                        {todo.value}
+                        {tache.value}
                     </li>
                     <button className="btn-primary" >edit</button>
-                    <button className="btn-danger" onClick={() => this.deleteTodo(todo.id)}>delete</button>      
+                    <button className="btn-danger" onClick={() => this.deleteTache(tache.id)}>delete</button>      
                 </div>
             ))
         }      
