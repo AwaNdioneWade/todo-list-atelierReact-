@@ -27,6 +27,11 @@ class App extends React.Component{
         this.setState({tache: ''})
     }
 
+    deleteTache = (TacheId) => {
+        const newListeTache = this.state.listeTache.filter(tache => tache.id !== TacheId)
+        this.setState({listeTache: newListeTache})
+    }
+
     editTache = (TacheId, newValue) => {
         this.setState(prev => ({
             listeTache: prev.listeTache.map(tache =>
@@ -42,12 +47,7 @@ class App extends React.Component{
             )
         }));
     }
-    
 
-    deleteTache = (TacheId) => {
-        const newListeTache = this.state.listeTache.filter(tache => tache.id !== TacheId)
-        this.setState({listeTache: newListeTache})
-      }
 
     render(){
     
@@ -62,6 +62,7 @@ class App extends React.Component{
       </div>
       <button type="submit" className="w-100 btn btn-success">Submit</button>
     </form>
+    
     <h1 className="mt-4 text-center">Liste Tache</h1>
     <ul>
         {
@@ -74,14 +75,13 @@ class App extends React.Component{
                     ) : (
                         <li>{tache.value}</li>
                     )}
-                    <button className="btn-primary" onClick={() => this.toggleEditing(tache.id)}>
+                    <button className="btn btn-warning text-light" onClick={() => this.toggleEditing(tache.id)}>
                         {tache.isEditing ? 'Save' : 'Edit'}
                     </button>
-                    <button className="btn-danger" onClick={() => this.deleteTache(tache.id)}>Delete</button>
+                    <button className="btn btn-danger" onClick={() => this.deleteTache(tache.id)}>Delete</button>
                 </div>
             ))
-        }      
-        {/* <span className='text-danger p-0'>Pas encore de tache</span> */}
+        }
     </ul>
     </div>
         )
